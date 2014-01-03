@@ -21,15 +21,16 @@ module.exports = co;
  * return a thunk.
  *
  * @param {Function} fn
+ * @param {Object} ctx
  * @return {Function}
  * @api public
  */
 
-function co(fn) {
+function co(fn, ctx) {
   var isGenFun = isGeneratorFunction(fn);
 
   return function (done) {
-    var ctx = this;
+    ctx = ctx || this;
 
     // in toThunk() below we invoke co()
     // with a generator, so optimize for
@@ -48,7 +49,7 @@ function co(fn) {
       // arguments provided, but no callbacks
       else done = error;
 
-      gen = fn.apply(this, args);
+      gen = fn.apply(ctx, args);
     } else {
       done = done || error;
     }
@@ -308,3 +309,4 @@ function error(err) {
     throw err;
   });
 }
+

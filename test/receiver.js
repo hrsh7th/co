@@ -10,10 +10,16 @@ var ctx = {
 };
 
 describe('co(receiver).call(ctx)', function(){
-  it('should set immediate gen receiver', function(done){
+  it('should set co(fn).call(ctx) immediate gen receiver', function(done){
     co(function *(){
       assert(ctx == this);
     }).call(ctx, done);
+  })
+
+  it('should set co(fn, ctx) immediate gen receiver', function(done){
+    co(function *(){
+      assert(ctx == this);
+    }, ctx)(done);
   })
 
   it('should set delegate generator receiver', function(done){
@@ -115,3 +121,4 @@ describe('co(receiver)(args...)', function(){
     })(1);
   })
 })
+
